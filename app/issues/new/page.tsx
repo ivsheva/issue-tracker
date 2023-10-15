@@ -27,14 +27,14 @@ export default function NewIssuePage() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const onSubmit = async (data: IssueForm) => {
+  const onSubmit = handleSubmit(async (data: IssueForm) => {
     try {
       await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (error) {
       setError("An unexpected error occured");
     }
-  };
+  });
 
   return (
     <div className="max-w-xl">
@@ -43,7 +43,7 @@ export default function NewIssuePage() {
           <Callout.Text color="red">{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={onSubmit} className="space-y-3">
         <TextField.Root>
           <TextField.Input {...register("title")} placeholder="Title" />
         </TextField.Root>
