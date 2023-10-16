@@ -12,7 +12,9 @@ export default function IssueDetails({ issue }: { issue: Issue }) {
         <p>{issue.createdAt.toDateString()}</p>
       </Flex>
       <Card>
-        <ReactMarkdown className="prose">{issue.description}</ReactMarkdown>
+        <ReactMarkdown className="prose max-w-full">
+          {issue.description}
+        </ReactMarkdown>
       </Card>
     </>
   );
