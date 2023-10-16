@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
 import { IssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
+import { NextRequest, NextResponse } from "next/server";
 
 interface ParamsProps {
   params: { id: string };
