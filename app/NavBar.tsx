@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiFillBug } from "react-icons/ai";
+import { Skeleton } from "@/app/components";
 
 function NavLinks() {
   const links = [
@@ -47,12 +48,14 @@ function NavLinks() {
 function AuthStatus() {
   const { data: session, status } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton width="4rem" height="2rem" />;
 
-  if (status === "unauthenticated") return;
-  <Button>
-    <Link href="/api/auth/signin">Log in</Link>
-  </Button>;
+  if (status === "unauthenticated")
+    return (
+      <Button>
+        <Link href="/api/auth/signin">Log in</Link>
+      </Button>
+    );
 
   return (
     <Box>
