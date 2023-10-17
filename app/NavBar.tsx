@@ -52,9 +52,10 @@ export default function NavBar() {
                 <DropdownMenu.Trigger>
                   <Avatar
                     src={session.user!.image!}
-                    fallback="User image"
+                    fallback="?"
                     radius="full"
                     className="cursor-pointer"
+                    referrerPolicy="no-referrer"
                   />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content>
