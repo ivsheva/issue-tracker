@@ -29,7 +29,7 @@ export default async function IssueDetailPage({ params: { id } }: Props) {
       </Box>
       {session && (
         <Flex direction="column" gap="4">
-          <IssueSelect />
+          <IssueSelect issue={issue} />
           <IssueEditButton issueId={issue.id} />
           <IssueDeleteButton issueId={issue.id} />
         </Flex>
