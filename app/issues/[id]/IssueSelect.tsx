@@ -15,8 +15,8 @@ export default function IssueSelect({ issue }: { issue: Issue }) {
 
   async function handleSubmit(userId: string) {
     try {
-      await axios.patch(`/axpi/issues/${issue.id}`, {
-        assignedToUserId: userId !== "null" ? userId : null,
+      await axios.patch(`/api/issues/${issue.id}`, {
+        assignedToUserId: userId || null,
       });
     } catch (error) {
       toast.error("Changes could not be saved");
@@ -26,14 +26,14 @@ export default function IssueSelect({ issue }: { issue: Issue }) {
   return (
     <>
       <Select.Root
-        defaultValue={issue.assignedToUserId || "null"}
+        defaultValue={issue.assignedToUserId || ""}
         onValueChange={handleSubmit}
       >
         <Select.Trigger placeholder="Assign..." />
         <Select.Content>
           <Select.Group>
             <Select.Label>Suggestions</Select.Label>
-            <Select.Item value="null">Unassigned</Select.Item>
+            <Select.Item value="">Unassigned</Select.Item>
             {users?.map((user) => (
               <Select.Item key={user.id} value={user.id}>
                 {user.name}
