@@ -13,21 +13,10 @@ export async function POST(request: NextRequest) {
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
 
-  const user = await prisma.user.findUnique({
-    where: { id: body.assignedToUserId },
-  });
-
-  if (!user)
-    return NextResponse.json(
-      { error: "This user does not exist" },
-      { status: 401 }
-    );
-
   const newIssue = await prisma.issue.create({
     data: {
       title: body.title,
       description: body.description,
-      assignedToUserId: body.assignedToUserId,
     },
   });
 
