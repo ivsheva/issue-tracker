@@ -18,6 +18,7 @@ export default function IssueSelect({ issue }: { issue: Issue }) {
       await axios.patch(`/api/issues/${issue.id}`, {
         assignedToUserId: userId || null,
       });
+      toast.success("Success");
     } catch (error) {
       toast.error("Changes could not be saved");
     }

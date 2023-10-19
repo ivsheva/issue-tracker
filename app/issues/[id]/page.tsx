@@ -7,6 +7,7 @@ import IssueEditButton from "./IssueEditButton";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
 import IssueSelect from "./IssueSelect";
+import IssueStatusSelect from "./IssueStatusSelect";
 
 interface Props {
   params: {
@@ -32,6 +33,7 @@ export default async function IssueDetailPage({ params: { id } }: Props) {
           <IssueSelect issue={issue} />
           <IssueEditButton issueId={issue.id} />
           <IssueDeleteButton issueId={issue.id} />
+          <IssueStatusSelect issue={issue} />
         </Flex>
       )}
     </Grid>
