@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  Container,
   DropdownMenu,
   Flex,
   Text,
@@ -89,10 +90,12 @@ function AuthStatus() {
 export default function NavBar() {
   return (
     <nav className="border-b mb-5 px-5 py-3">
-      <Flex justify="between">
-        <NavLinks />
-        <AuthStatus />
-      </Flex>
+      <Container>
+        <Flex justify="between">
+          <NavLinks />
+          <AuthStatus />
+        </Flex>
+      </Container>
     </nav>
   );
 }
