@@ -19,6 +19,9 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+  theme: {
+    colorScheme: "light"
+  }
 };
 
 export default authOptions;
