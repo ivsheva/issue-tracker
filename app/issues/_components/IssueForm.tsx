@@ -6,16 +6,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
+import SimpleMDE from "easymde";
 import "easymde/dist/easymde.min.css";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import SimpleMDE from "react-simplemde-editor";
+import { SimpleMdeReact } from "react-simplemde-editor";
 import z from "zod";
 
 type IssueFormData = z.infer<typeof IssueSchema>;
 
 export default function IssueForm({ issue }: { issue?: Issue }) {
+  const noSpellcheckerOptions = useMemo(() => {
+    return {
+      autofocus: true,
+      spellChecker: false,
+    } as SimpleMDE.Options;
+  }, []);
   const {
     register,
     control,
@@ -60,7 +67,11 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
           defaultValue={issue?.description}
           control={control}
           render={({ field }) => (
-            <SimpleMDE placeholder="Description" {...field} />
+            <SimpleMdeReact
+              options={noSpellcheckerOptions}
+              placeholder="Description"
+              {...field}
+            />
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
