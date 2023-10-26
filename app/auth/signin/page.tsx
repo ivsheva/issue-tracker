@@ -1,9 +1,9 @@
 "use client";
-import { ErrorMessage } from "@/app/components";
+import { ErrorMessage, Link } from "@/app/components";
 import { LoginUserSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import { Button, TextField } from "@radix-ui/themes";
+import { Button, Flex, Text, TextField } from "@radix-ui/themes";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -81,6 +81,15 @@ export default function LoginPage() {
           </ErrorMessage>
         </div>
       ))}
+      <Flex direction="column" align="center" justify="between">
+        <Text size="1" className="opacity-70">
+          Don`t have an account?
+        </Text>
+        <Text size="1">
+          <Link href="/auth/register">Register</Link>
+        </Text>
+      </Flex>
+
       <Button disabled={isSubmitting}>Submit</Button>
     </form>
   );
