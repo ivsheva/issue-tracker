@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import CalloutError from "../CalloutError";
+import OAuth from "../OAuth";
 
 type RegisterFormData = z.infer<typeof UserSchema>;
 
@@ -57,39 +58,42 @@ export default function RegisterForm() {
   };
 
   return (
-    <form
-      className="flex flex-col items-center justify-center border rounded-xl h-96 w-96 m-auto space-y-5 py-2"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      {error && <CalloutError>{error}</CalloutError>}
-      {registerBlocks.map((block, index) => (
-        <div key={index}>
-          <label>{block.label}</label>
-          <TextField.Root>
-            {block.value === "password" && (
-              <TextField.Slot
-                className="cursor-pointer"
-                onClick={() => setShow((prevShow) => !prevShow)}
-              >
-                {show ? <EyeOpenIcon /> : <EyeClosedIcon />}
-              </TextField.Slot>
-            )}
-            <TextField.Input
-              {...register(block.value)}
-              placeholder={block.label}
-              type={block.value === "password" && !show ? "password" : "text"}
-              min="8"
-              max="60"
-            />
-          </TextField.Root>
-          <ErrorMessage>
-            {block.value === "email"
-              ? errors.email?.message
-              : errors.password?.message}
-          </ErrorMessage>
-        </div>
-      ))}
-      <Button disabled={isSubmitting}>Submit</Button>
-    </form>
+    <div className="flex flex-col items-center justify-center border rounded-xl h-auto w-96 m-auto py-5 space-y-5">
+      <form
+        className="flex flex-col space-y-5 items-center justify-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {error && <CalloutError>{error}</CalloutError>}
+        {registerBlocks.map((block, index) => (
+          <div key={index}>
+            <label>{block.label}</label>
+            <TextField.Root>
+              {block.value === "password" && (
+                <TextField.Slot
+                  className="cursor-pointer"
+                  onClick={() => setShow((prevShow) => !prevShow)}
+                >
+                  {show ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                </TextField.Slot>
+              )}
+              <TextField.Input
+                {...register(block.value)}
+                placeholder={block.label}
+                type={block.value === "password" && !show ? "password" : "text"}
+                min="8"
+                max="60"
+              />
+            </TextField.Root>
+            <ErrorMessage>
+              {block.value === "email"
+                ? errors.email?.message
+                : errors.password?.message}
+            </ErrorMessage>
+          </div>
+        ))}
+        <Button disabled={isSubmitting}>Submit</Button>
+      </form>
+      <OAuth />
+    </div>
   );
 }

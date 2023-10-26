@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import CalloutError from "../CalloutError";
+import OAuth from "../OAuth";
 
 const loginBlocks: { label: string; value: "email" | "password" }[] = [
   {
@@ -49,48 +50,50 @@ export default function LoginPage() {
   };
 
   return (
-    <form
-      className="flex flex-col items-center justify-center border rounded-xl h-96 w-96 m-auto space-y-5 py-2"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      {error && <CalloutError>{error}</CalloutError>}
-      {loginBlocks.map((block, index) => (
-        <div key={index}>
-          <label>{block.label}</label>
-          <TextField.Root>
-            {block.value === "password" && (
-              <TextField.Slot
-                className="cursor-pointer"
-                onClick={() => setShow((prevShow) => !prevShow)}
-              >
-                {show ? <EyeOpenIcon /> : <EyeClosedIcon />}
-              </TextField.Slot>
-            )}
-            <TextField.Input
-              {...register(block.value)}
-              placeholder={block.label}
-              type={block.value === "password" && !show ? "password" : "text"}
-              min="8"
-              max="60"
-            />
-          </TextField.Root>
-          <ErrorMessage>
-            {block.value === "email"
-              ? errors.email?.message
-              : errors.password?.message}
-          </ErrorMessage>
-        </div>
-      ))}
-      <Flex direction="column" align="center" justify="between">
-        <Text size="1" className="opacity-70">
-          Don`t have an account?
-        </Text>
-        <Text size="1">
-          <Link href="/auth/register">Register</Link>
-        </Text>
-      </Flex>
-
-      <Button disabled={isSubmitting}>Submit</Button>
-    </form>
+    <div className="flex flex-col items-center justify-center border rounded-xl h-auto w-96 m-auto py-5 space-y-5">
+      <form
+        className="flex flex-col space-y-5 items-center justify-center"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        {error && <CalloutError>{error}</CalloutError>}
+        {loginBlocks.map((block, index) => (
+          <div key={index}>
+            <label>{block.label}</label>
+            <TextField.Root>
+              {block.value === "password" && (
+                <TextField.Slot
+                  className="cursor-pointer"
+                  onClick={() => setShow((prevShow) => !prevShow)}
+                >
+                  {show ? <EyeOpenIcon /> : <EyeClosedIcon />}
+                </TextField.Slot>
+              )}
+              <TextField.Input
+                {...register(block.value)}
+                placeholder={block.label}
+                type={block.value === "password" && !show ? "password" : "text"}
+                min="8"
+                max="60"
+              />
+            </TextField.Root>
+            <ErrorMessage>
+              {block.value === "email"
+                ? errors.email?.message
+                : errors.password?.message}
+            </ErrorMessage>
+          </div>
+        ))}
+        <Flex direction="column" align="center" justify="between">
+          <Text size="1" className="opacity-70">
+            Don`t have an account?
+          </Text>
+          <Text size="1">
+            <Link href="/auth/register">Register</Link>
+          </Text>
+        </Flex>
+        <Button disabled={isSubmitting}>Submit</Button>
+      </form>
+      <OAuth />
+    </div>
   );
 }
