@@ -41,3 +41,5 @@ export const UserSchema = z.object({
     .min(8, "Password is too short")
     .max(60, "Password is too long"),
 });
+
+export const LoginUserSchema = UserSchema.omit({ username: true });

@@ -58,7 +58,9 @@ const authOptions: NextAuthOptions = {
     colorScheme: "light",
     logo: "https://icons.veryicon.com/png/o/miscellaneous/first-icon/bug-33.png",
   },
-
+  pages: {
+    signIn: "/auth/signin"
+  }
 };
 
 export default authOptions;
