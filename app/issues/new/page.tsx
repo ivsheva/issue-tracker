@@ -12,5 +12,5 @@ export default function NewIssuePage() {
 }
 
 export const metadata: Metadata = {
-  title: "Create a new issue",
+  title: "Issue Tracker - Create New Issue",
 };

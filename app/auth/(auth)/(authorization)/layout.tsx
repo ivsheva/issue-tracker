@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import { PropsWithChildren } from "react";
-import CalloutError from "../CalloutError";
-import OAuth from "../OAuth";
 import { useSearchParams } from "next/navigation";
+import { PropsWithChildren } from "react";
+import CalloutError from "../../CalloutError";
+import OAuth from "../../OAuth";
 
 export default function layout({ children }: PropsWithChildren) {
   const searchParams = useSearchParams();

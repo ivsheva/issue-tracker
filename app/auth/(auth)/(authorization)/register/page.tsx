@@ -1,17 +1,26 @@
 "use client";
 import { ErrorMessage, Link } from "@/app/components";
-import { LoginUserSchema } from "@/app/validationSchemas";
+import { UserSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { Button, Flex, Text, TextField } from "@radix-ui/themes";
+import axios from "axios";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import CalloutError from "../../CalloutError";
+import CalloutError from "../../../CalloutError";
 
-const loginBlocks: { label: string; value: "email" | "password" }[] = [
+type RegisterFormData = z.infer<typeof UserSchema>;
+
+const registerBlocks: {
+  label: string;
+  value: "username" | "email" | "password";
+}[] = [
+  {
+    label: "Username",
+    value: "username",
+  },
   {
     label: "Email",
     value: "email",
@@ -22,30 +31,29 @@ const loginBlocks: { label: string; value: "email" | "password" }[] = [
   },
 ];
 
-type LoginFormData = z.infer<typeof LoginUserSchema>;
-
-export default function LoginPage() {
-  const {
-    register,
-    formState: { errors, isSubmitting },
-    handleSubmit,
-  } = useForm<LoginFormData>({ resolver: zodResolver(LoginUserSchema) });
+export default function RegisterForm() {
   const [show, setShow] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(UserSchema),
+  });
 
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callBackUrl") || "/";
-
-  const onSubmit = async (data: LoginFormData) => {
-    const response = await signIn("credentials", {
-      redirect: false,
-      email: data.email,
-      password: data.password,
-      callbackUrl,
-    });
-    if (response?.error) setError("Invalid email or password.");
-    else router.push(callbackUrl);
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      await axios.post("/api/register", data);
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl: "/",
+      });
+    } catch (error: any) {
+      if (typeof error === "object") setError(error.response.data.error);
+      console.log(error);
+    }
   };
 
   return (
@@ -54,7 +62,7 @@ export default function LoginPage() {
       onSubmit={handleSubmit(onSubmit)}
     >
       {error && <CalloutError>{error}</CalloutError>}
-      {loginBlocks.map((block, index) => (
+      {registerBlocks.map((block, index) => (
         <div key={index}>
           <label>{block.label}</label>
           <TextField.Root>
@@ -83,10 +91,10 @@ export default function LoginPage() {
       ))}
       <Flex direction="column" align="center" justify="between">
         <Text size="1" className="opacity-70">
-          Don`t have an account?
+          Already have an account?
         </Text>
         <Text size="1">
-          <Link href="/auth/register">Register</Link>
+          <Link href="/auth/signin">Login</Link>
         </Text>
       </Flex>
       <Button disabled={isSubmitting}>Submit</Button>
