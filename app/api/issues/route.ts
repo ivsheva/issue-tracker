@@ -10,6 +10,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const validation = IssueSchema.safeParse(body);
 
+  const currentUser = await prisma.user.findUnique({
+    where: { email: session.user?.email! }
+  }) // find current user
+
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
 
@@ -17,6 +21,7 @@ export async function POST(request: NextRequest) {
     data: {
       title: body.title,
       description: body.description,
+      assignedToUserId: currentUser?.id
     },
   });
 
